@@ -1,0 +1,69 @@
+:root {
+    --vibrant-purple: #5D3FD3;
+    --accent-orange: #FF8C42;
+    --text-color: #ffffff;
+    --background-color: #f8f8f8;
+  }
+  
+  .pet-feed-container {
+    background-color: var(--background-color);
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    padding: 4em;
+  }
+  
+  .pet-feed-title {
+    color: var(--vibrant-purple);
+    font-weight: bold;
+  }
+  
+  .pet-feed-error {
+    margin-bottom: 20px;
+  }
+  
+  .pet-card {
+    background: var(--vibrant-purple);
+    border: none;
+    border-radius: 10px;
+    color: var(--text-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .pet-photo {
+    /* object-fit: cover; */
+    height: 200px;
+  }
+  
+  .pet-name {
+    font-size: 1.3em;
+    text-transform: capitalize;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .pet-description {
+    margin-bottom: 20px;
+    line-height: 1.4em;
+  }
+  
+  .spot-button {
+    background: var(--accent-orange);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .spot-button:hover {
+    background: #e4783a;
+  }
+  
+  
+  
+  
