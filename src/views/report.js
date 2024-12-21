@@ -17,6 +17,7 @@ const ReportLostPet = () => {
   const [photoURL, setPhotoURL] = useState("");
   const [petType, updatePetType] = useState("cat");
   const [date, setDate] = useState("");
+  const [activeSubmit, setActiveSubmit] = useState(false);
   const navigate = useNavigate();
 
   // Replace with your actual API key, ensuring Places API is enabled
@@ -67,6 +68,7 @@ const ReportLostPet = () => {
   }, [apiKey]);
 
   const createObj = async () => { 
+    setActiveSubmit(true);
     let obj = {
         street,
         city,
@@ -79,9 +81,18 @@ const ReportLostPet = () => {
         date: moment().format()
     };
 
+    if(!obj.photoURL || !obj.email){
+      alert('Please enter all details and resubmit.');
+      setActiveSubmit(false);
+      return;
+    }
+
     const result = await helpers.reportLostPet(obj);
     if(result === 200){
         navigate('/');
+    } else {
+      alert('Please fill out all fields and try to submit again.');
+      setActiveSubmit(false);
     }
   }
 
@@ -111,22 +122,22 @@ const ReportLostPet = () => {
         <ul class="list-group mb-3">
         <p>Pet Type</p>
         <li class="list-group-item">
-            <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="firstRadio" checked={petType === "cat"} onChange={() => { updatePetType("cat") }}/>
+            <input required class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="firstRadio" checked={petType === "cat"} onChange={() => { updatePetType("cat") }}/>
             <label class="form-check-label" for="firstRadio">Cat</label>
         </li>
         <li class="list-group-item">
-            <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="secondRadio" checked={petType === "dog"} onChange={() => { updatePetType("dog") }}/>
+            <input required class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="secondRadio" checked={petType === "dog"} onChange={() => { updatePetType("dog") }}/>
             <label class="form-check-label" for="secondRadio">Dog</label>
         </li>
         <li class="list-group-item">
-            <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="thirdRadio" checked={petType === "other"} onChange={() => { updatePetType("other") }}/>
+            <input required class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="thirdRadio" checked={petType === "other"} onChange={() => { updatePetType("other") }}/>
             <label class="form-check-label" for="thirdRadio">Other</label>
         </li>
         </ul>
 
         <div className="mb-3">
           <label htmlFor="description" className="form-label">Please give a description of your pet.</label>
-          <input type="text" className="form-control form-control-lg" id="description" onChange={(e) => {
+          <input required type="text" className="form-control form-control-lg" id="description" onChange={(e) => {
             setDescription(e.target.value);
           }}/>
         </div>
@@ -135,6 +146,7 @@ const ReportLostPet = () => {
           <label htmlFor="missing" className="form-label">Where did your pet go missing?</label>
           <div id="emailHelp" className="form-text mb-2">(street, city, state)</div>
           <input
+            required
             type="text"
             className="form-control form-control-lg"
             id="missing"
@@ -146,18 +158,18 @@ const ReportLostPet = () => {
 
         <div className="mb-3">
           <label htmlFor="formFileLg" className="form-label">Please upload a picture of your pet.</label>
-          <input className="form-control form-control-lg" id="formFileLg" type="file" onChange={handlePhotoChange}/>
+          <input required className="form-control form-control-lg" id="formFileLg" type="file" onChange={handlePhotoChange}/>
         </div>
 
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-          <input type="email" className="form-control form-control-lg" id="emailAddress" aria-describedby="emailHelp" onChange={(e)=>{
+          <input required type="email" className="form-control form-control-lg" id="emailAddress" aria-describedby="emailHelp" onChange={(e)=>{
             setEmail(e.target.value);
           }}/>
           <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
         </div>
 
-        <button type="button" className="btn btn-primary btn-lg mt-4" onClick={() => {
+        <button type="button" disabled={activeSubmit} className="btn btn-primary btn-lg mt-4" onClick={() => {
             createObj();
         }}>Submit</button>
       </form>

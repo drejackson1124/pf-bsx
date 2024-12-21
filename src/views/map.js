@@ -45,10 +45,10 @@ function NeighborhoodMap({ neighborhoodName }) {
 
   // Once we have LAT/LNG, use the Maps Embed API. We'll use `view` mode for a generic map.
   // You can adjust zoom level as desired, e.g., &zoom=14
-  const mapsEmbedUrl = `https://www.google.com/maps/embed/v1/view?key=${apiKey}&center=${coords.lat},${coords.lng}&zoom=20`;
+  const mapsEmbedUrl = `https://www.google.com/maps/embed/v1/view?key=${apiKey}&center=${coords.lat},${coords.lng}&zoom=18`;
 
   return (
-    <div style={{ width: '100%', height: '430px' }}>
+    <div style={{ width: '100%'}}>
       <iframe
         width="100%"
         height="300px"

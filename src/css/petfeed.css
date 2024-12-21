@@ -10,6 +10,7 @@
     color: #333;
     font-family: 'Arial', sans-serif;
     padding: 4em;
+    scroll-behavior: smooth;
   }
   
   .pet-feed-title {
@@ -63,6 +64,8 @@
   .spot-button:hover {
     background: #e4783a;
   }
+
+  
   
   
   

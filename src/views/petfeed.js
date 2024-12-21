@@ -84,7 +84,7 @@ function PetFeed() {
   // just something here
 
   return (
-    <div className="container my-4 pet-feed-container">
+    <div className="container pet-feed-container">
       <h1 className="pet-feed-title text-center mb-4">Lost Pets</h1>
       <div class="input-group mb-4">
         <input type="text" 
@@ -209,6 +209,12 @@ function PetFeed() {
                 <NeighborhoodMap neighborhoodName={address}/>
               </div>
               <div className="modal-footer">
+                <button type="button" className="btn btn-success" onClick={handleCloseModal}>
+                  I Saw This Pet!
+                </button>
+                <button type="button" className="btn btn-danger" onClick={handleCloseModal}>
+                  Report Post
+                </button>
                 <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
                   Close
                 </button>
