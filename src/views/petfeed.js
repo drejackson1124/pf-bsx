@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import helpers from '../js/functions';
 import '../css/petfeed.css';
 import NeighborhoodMap from './map';
+import DualAddressComponent from './dualac';
+import Spinner from './spinner';
 
 function PetFeed() {
   const [pets, setPets] = useState([]);
@@ -13,6 +15,8 @@ function PetFeed() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const missingRef = useRef(null);
+  const [reportSightingModal, setReportSightingModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const apiKey = 'AIzaSyDGOaU4mr87R31882irdrvpJdm6TlWuw4I'; 
 
   useEffect(() => {
@@ -26,6 +30,10 @@ function PetFeed() {
     }
     fetchPets();
   }, []);
+
+  useEffect(() => {
+
+  }, [reportSightingModal]);
 
   useEffect(() => {
     if (!missingRef.current || !window.google) return;
@@ -74,6 +82,15 @@ function PetFeed() {
 
   };
 
+  const handleOpenReportSightingModal = () => {
+    setShowModal(false);
+    setReportSightingModal(true)
+  };
+
+  const handleCloseRPM = () => {
+    setReportSightingModal(false)
+  };
+
   const handleLostPetSearch = async () => {
     let obj = { city, state };
     let response = await helpers.findLostPets(obj);
@@ -86,6 +103,7 @@ function PetFeed() {
   return (
     <div className="container pet-feed-container">
       <h1 className="pet-feed-title text-center mb-4">Lost Pets</h1>
+      {/* {isLoading && <Spinner />} */}
       <div class="input-group mb-4">
         <input type="text" 
           class="form-control" 
@@ -94,6 +112,7 @@ function PetFeed() {
           ref={missingRef}
           value={address}
           onChange={(e) => setAddress(e.target.value)}
+          id="LPAddress"
           />
         <button 
           class="input-group-text"
@@ -143,42 +162,11 @@ function PetFeed() {
           </div>
         ))
       )}
-      {/* {pets.map((pet) => (
-        <div key={pet.id} className="row g-3 justify-content-center mb-4">
-          <div className="col-12 col-md-8 offset-md-2">
-            <div className="card pet-card h-100">
-              {pet.photoURL && (
-                <img
-                  src={pet.photoURL}
-                  alt={pet.name}
-                  className="card-img-top pet-photo img-fluid"
-                />
-              )}
-              <div className="card-body d-flex flex-column">
-                <h2 className="card-title pet-name">{pet.petsname}</h2>
-                <p className="card-text pet-description">{pet.street}, {pet.city}, {pet.state}</p>
-                <div className="d-flex gap-2">
-                  <button className="btn spot-button">
-                    Have You Seen Me?
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => handleDetailsClick(pet)}
-                  >
-                    Details
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))} */}
 
-      {/* Modal */}
       {showModal && selectedPet && (
         <div
           className="modal fade show"
+          id="detailsModal"
           style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}
           tabIndex="-1"
         >
@@ -209,13 +197,48 @@ function PetFeed() {
                 <NeighborhoodMap neighborhoodName={address}/>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-success" onClick={handleCloseModal}>
+                <button type="button" className="btn btn-success" onClick={handleOpenReportSightingModal}>
                   I Saw This Pet!
                 </button>
                 <button type="button" className="btn btn-danger" onClick={handleCloseModal}>
                   Report Post
                 </button>
                 <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+    {reportSightingModal && selectedPet && (
+        <div
+          className="modal fade show"
+          id="reportModal"
+          style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}
+          tabIndex="-1"
+        >
+          <div className="modal-dialog modal-dialog-centered modal-lg">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Sighting Details for {selectedPet.petsname}</h5>
+              </div>
+              <div className="modal-body">
+                <div className="mb-3 text-center">
+                <form className="reportForm">
+                  <div className="mb-3">
+                    <img src={selectedPet.photoURL} className='img-fluid'/>
+                  </div>
+                <DualAddressComponent petsname={selectedPet.petsname}/>
+                </form>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-success">
+                  Confirm
+                </button>
+                <button type="button" className="btn btn-secondary" onClick={handleCloseRPM}>
                   Close
                 </button>
               </div>

@@ -64,6 +64,11 @@
   .spot-button:hover {
     background: #e4783a;
   }
+  
+  .pac-container {
+    z-index: 1060 !important; /* Higher than Bootstrap modals */
+}
+
 
   
   
