@@ -189,9 +189,9 @@ function PetFeed() {
                   {/* <p className="card-text pet-description">{pet.description}</p> */}
                   <p className="card-text pet-description">{pet.street}, {pet.city}, {pet.state}</p>
                   <div className="d-flex gap-2">
-                    <button className="btn spot-button">
+                    {/* <button className="btn spot-button">
                       Have You Seen Me?
-                    </button>
+                    </button> */}
                     <button
                       type="button"
                       className="btn btn-primary"

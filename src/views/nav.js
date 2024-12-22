@@ -11,7 +11,10 @@ const NavBar = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav">
-                <Link to="/report" class="nav-link active" aria-current="page">Report Lost Pet</Link>
+                <Link to="/report" class="nav-link" aria-current="page">Report Lost Pet</Link>
+            </div>
+            <div className="navbar-nav">
+                <Link to="/confirm-identity" class="nav-link" aria-current="page">View Your Posts</Link>
             </div>
             </div>
         </div>

@@ -17,6 +17,7 @@ const ReportLostPet = () => {
   const [photoURL, setPhotoURL] = useState("");
   const [petType, updatePetType] = useState("cat");
   const [date, setDate] = useState("");
+  const [passcode, setPasscode] = useState("");
   const [activeSubmit, setActiveSubmit] = useState(false);
   const navigate = useNavigate();
 
@@ -78,7 +79,8 @@ const ReportLostPet = () => {
         petsname,
         email,
         photoURL,
-        date: moment().format()
+        date: moment().format(),
+        passcode
     };
 
     if(!obj.photoURL || !obj.email){
@@ -140,6 +142,14 @@ const ReportLostPet = () => {
           <input required type="text" className="form-control form-control-lg" id="description" onChange={(e) => {
             setDescription(e.target.value);
           }}/>
+        </div>
+
+        <div className="mb-3">
+          <label required htmlFor="passcode" className="form-label">Please provide a passcode between 4-6 characters.</label>
+          <input minLength="4" maxLength="6" required type="text" className="form-control form-control-lg" id="passcode" onChange={(e) => {
+            setPasscode(e.target.value);
+          }}/>
+          <div id="emailHelp" className="form-text">You'll be able to view your postings with this passcode.</div>
         </div>
 
         <div className="mb-3">

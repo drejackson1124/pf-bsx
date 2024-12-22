@@ -19,6 +19,10 @@ const helpers = {
     reportSighting: async (obj) => {
         const response = await axios.post(`${backend}/sighting`, obj);
         return response.data;
+    },
+    confirmIdentity: async (obj) => {
+        const response = await axios.post(`${backend}/retrieveposts`, obj);
+        return response.data;
     }
 }
 
