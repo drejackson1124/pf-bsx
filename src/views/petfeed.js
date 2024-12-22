@@ -110,11 +110,15 @@ function PetFeed() {
     }
   };
 
+  const onAddressChange = (obj) => {
+    setStreet(obj.street);
+    setCity(obj.city);
+    setState(obj.state);
+  }
+
   const confirmSighting = async () => {
 
     setconfirmSightingDisabled(true);
-
-    console.log(selectedPet);
 
     const obj = {
       street,
@@ -129,6 +133,7 @@ function PetFeed() {
     if(response.statusCode === 200) {
       handleCloseRPM();
       setconfirmSightingDisabled(false);
+      setAddress("");
       navigate('/');
     } else {
       setconfirmSightingDisabled(false);
@@ -231,10 +236,25 @@ function PetFeed() {
                 </div>
                 <p><strong>Name:</strong> {selectedPet.petsname}</p>
                 <p><strong>Description:</strong> {selectedPet.description}</p>
-                <p><strong>Last Seen:</strong> {address}</p>
+                <p><strong>Reported Lost At:</strong> {address}</p>
 
                 <NeighborhoodMap neighborhoodName={address}/>
               </div>
+              {selectedPet.sightings && (
+                <div className="sightings text-center">
+                  <hr/>
+                  <h3>Reported Sightings</h3>
+                  <div className="ul text-start mx-2">
+                    {selectedPet.sightings.map((lastSeen) => {
+                      return (
+                        <div key={lastSeen.id} className="li mb-2">
+                          <span className="seenLocation">{lastSeen.street}, {lastSeen.city}, {lastSeen.state}</span> <span className="seenTimeStamp">{moment(lastSeen.date).fromNow()}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
               <div className="modal-footer">
                 <button type="button" className="btn btn-success" onClick={handleOpenReportSightingModal}>
                   I Saw This Pet!
@@ -269,7 +289,7 @@ function PetFeed() {
                   <div className="mb-3">
                     <img src={selectedPet.photoURL} className='img-fluid'/>
                   </div>
-                <DualAddressComponent petsname={selectedPet.petsname}/>
+                <DualAddressComponent petsname={selectedPet.petsname} onAddressChange={onAddressChange}/>
                 <input
                   type="tel"
                   id="phone"
