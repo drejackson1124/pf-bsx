@@ -4,6 +4,8 @@ import '../css/petfeed.css';
 import NeighborhoodMap from './map';
 import DualAddressComponent from './dualac';
 import Spinner from './spinner';
+import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 function PetFeed() {
   const [pets, setPets] = useState([]);
@@ -17,7 +19,10 @@ function PetFeed() {
   const missingRef = useRef(null);
   const [reportSightingModal, setReportSightingModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [phone, setPhone] = useState("");
+  const navigate = useNavigate();
   const apiKey = 'AIzaSyDGOaU4mr87R31882irdrvpJdm6TlWuw4I'; 
+  const [confirmSightingDisabled, setconfirmSightingDisabled] = useState(false);
 
   useEffect(() => {
     async function fetchPets() {
@@ -96,6 +101,40 @@ function PetFeed() {
     let response = await helpers.findLostPets(obj);
     let result = JSON.parse(response);
     setPets(result);
+  }
+
+  const handlePNChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    if (value.length <= 10) {
+      setPhone(value);
+    }
+  };
+
+  const confirmSighting = async () => {
+
+    setconfirmSightingDisabled(true);
+
+    console.log(selectedPet);
+
+    const obj = {
+      street,
+      city,
+      state,
+      date: moment().format(),
+      phonenumber: phone,
+      id: selectedPet.id
+    }
+    const response = await helpers.reportSighting(obj);
+    
+    if(response.statusCode === 200) {
+      handleCloseRPM();
+      setconfirmSightingDisabled(false);
+      navigate('/');
+    } else {
+      setconfirmSightingDisabled(false);
+      alert('Something went wrong. Please try again.');
+      navigate('/');
+    }
   }
 
   // just something here
@@ -231,11 +270,23 @@ function PetFeed() {
                     <img src={selectedPet.photoURL} className='img-fluid'/>
                   </div>
                 <DualAddressComponent petsname={selectedPet.petsname}/>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={phone}
+                  onChange={handlePNChange}
+                  placeholder="Please enter a good contact number"
+                  maxLength="10"
+                  pattern="\d{10}"
+                  required
+                  className={error ? 'input-error form-control mt-3' : 'form-control mt-3'}
+                />
                 </form>
                 </div>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-success">
+                <button disabled={confirmSightingDisabled} type="button" className="btn btn-success" onClick={confirmSighting}>
                   Confirm
                 </button>
                 <button type="button" className="btn btn-secondary" onClick={handleCloseRPM}>

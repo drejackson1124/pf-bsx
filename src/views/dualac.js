@@ -1,6 +1,10 @@
 // DualAddressComponent.js
 import React, { useEffect, useRef, useState } from 'react';
 
+
+
+// figure out how to pass address from this component to petfeed component
+
 function DualAddressComponent({ onAddressChange, petsname }) {
   const rpmAddressRef = useRef(null);
   const [street, setStreet] = useState("");
@@ -70,7 +74,6 @@ function DualAddressComponent({ onAddressChange, petsname }) {
         className="form-control"
         placeholder={`What street did you see ${petsname}?`}
       />
-      <span style={{fontSize:"10px"}}>*An email will be sent to the owner with this update.</span>
     </div>
   );
 }

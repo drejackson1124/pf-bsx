@@ -15,6 +15,11 @@ const helpers = {
     findLostPets: async (obj) => {
         const response = await axios.post(`${backend}/findLostPets`, obj);
         return response.data.body;
+    },
+    reportSighting: async (obj) => {
+        const response = await axios.post(`${backend}/sighting`, obj);
+        console.log(response.data);
+        return response.data;
     }
 }
 
