@@ -23,6 +23,10 @@ const helpers = {
     confirmIdentity: async (obj) => {
         const response = await axios.post(`${backend}/retrieveposts`, obj);
         return response.data;
+    },
+    disablePost: async (obj) => {
+        const response = await axios.post(`${backend}/disablepost`, obj);
+        return response.data;
     }
 }
 

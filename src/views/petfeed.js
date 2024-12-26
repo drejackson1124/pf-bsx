@@ -84,6 +84,7 @@ function PetFeed() {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedPet(null);
+    setAddress("");
 
   };
 
@@ -111,14 +112,23 @@ function PetFeed() {
   };
 
   const onAddressChange = (obj) => {
-    setStreet(obj.street);
-    setCity(obj.city);
-    setState(obj.state);
+    console.log(obj.street, obj.street.length);
+    if(obj.street.length === 0){
+      alert('Please enter a street.');
+    } else {
+      setStreet(obj.street);
+      setCity(obj.city);
+      setState(obj.state);
+    }
   }
 
   const confirmSighting = async () => {
 
     setconfirmSightingDisabled(true);
+
+    let response = {
+      statusCode: 400
+    };
 
     const obj = {
       street,
@@ -128,7 +138,14 @@ function PetFeed() {
       phonenumber: phone,
       id: selectedPet.id
     }
-    const response = await helpers.reportSighting(obj);
+
+    if(street.length === 0){
+      alert("Please enter a street.");
+      setconfirmSightingDisabled(false);
+      return;
+    } else {
+      response = await helpers.reportSighting(obj);
+    }
     
     if(response.statusCode === 200) {
       handleCloseRPM();
@@ -174,36 +191,46 @@ function PetFeed() {
         <div className="text-center">No pets have been reported lost in this area.</div>
       ) : (
         pets.map((pet) => (
-          <div key={pet.id} className="row g-3 justify-content-center mb-4">
-            <div className="col-12 col-md-8 offset-md-2">
-              <div className="card pet-card h-100">
-                {pet.photoURL && (
-                  <img
-                    src={pet.photoURL}
-                    alt={pet.name}
-                    className="card-img-top pet-photo img-fluid"
-                  />
-                )}
-                <div className="card-body d-flex flex-column">
-                  <h2 className="card-title pet-name">{pet.petsname}</h2>
-                  {/* <p className="card-text pet-description">{pet.description}</p> */}
-                  <p className="card-text pet-description">{pet.street}, {pet.city}, {pet.state}</p>
-                  <div className="d-flex gap-2">
-                    {/* <button className="btn spot-button">
-                      Have You Seen Me?
-                    </button> */}
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={() => handleDetailsClick(pet)}
-                    >
-                      Details
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div>
+            {!pet.disabled && (
+                        <div key={pet.id} className="row g-3 justify-content-center mb-4">
+                        <div className="col-12 col-md-8 offset-md-2">
+                          <div className="card pet-card h-100">
+                            {pet.photoURL && (
+                              <img
+                                src={pet.photoURL}
+                                alt={pet.name}
+                                className="card-img-top pet-photo img-fluid"
+                              />
+                            )}
+                            <div className="card-body d-flex flex-column">
+                              <h2 className="card-title pet-name">{pet.petsname}</h2>
+                              {/* <p className="card-text pet-description">{pet.description}</p> */}
+                              <div className="card-text pet-description mb-0">
+                                  <span>Missing Location</span>
+                                  <br/>
+                                  <h6>{pet.street}, {pet.city}, {pet.state}</h6>
+                              </div>
+                              <h6>Posted {moment(pet.date).fromNow()}</h6>
+                              <div className="d-flex gap-2">
+                                {/* <button className="btn spot-button">
+                                  Have You Seen Me?
+                                </button> */}
+                                <button
+                                  type="button"
+                                  className="btn btn-primary"
+                                  onClick={() => handleDetailsClick(pet)}
+                                >
+                                  Details
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            )}
           </div>
+
         ))
       )}
 
@@ -238,7 +265,7 @@ function PetFeed() {
                 <p><strong>Description:</strong> {selectedPet.description}</p>
                 <p><strong>Reported Lost At:</strong> {address}</p>
 
-                <NeighborhoodMap neighborhoodName={address}/>
+                {/* <NeighborhoodMap neighborhoodName={address}/> */}
               </div>
               {selectedPet.sightings && (
                 <div className="sightings text-center">

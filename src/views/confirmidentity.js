@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import helpers from "../js/functions";
 import { UserContext } from "./UserContext";
 import moment from "moment";
@@ -7,6 +7,15 @@ const ConfirmIdentity = () => {
     const { userCredentials, setUserCredentials, posts, setPosts } = useContext(UserContext);
     const [email, setEmail] = useState(userCredentials.email || "");
     const [passcode, setPasscode] = useState(userCredentials.passcode || "");
+    const [postId, setPostId] = useState("");
+
+    useEffect(() => {
+        const disablePost = async () => {
+            const response = await helpers.disablePost({id: postId});
+        }
+
+        disablePost();
+    }, [postId])
     
 
     const confirm = async () => {
@@ -14,7 +23,6 @@ const ConfirmIdentity = () => {
             const response = await helpers.confirmIdentity({ email, passcode });
             if (response.statusCode === 200) {
                 let results = JSON.parse(response.body);
-                console.log(results);
                 setPosts(results);
                 setUserCredentials({
                     email,
@@ -28,6 +36,10 @@ const ConfirmIdentity = () => {
             console.error("Error confirming identity:", error);
         }
     };
+
+    const setDisabledPostValue = (id) => {
+        setPostId(id);
+    }
 
     return (
         <div className="m-3">
@@ -56,40 +68,42 @@ const ConfirmIdentity = () => {
                 <div className="m-3">
                     {posts.length > 0 ? (
                         posts.map((post) => (
-                            <div className="card mb-3" key={post.id}>
-                                <div className="card-title text-center p-3 post-petsname" style={{fontSize:"25px"}}>{post.petsname}</div>
-                                <div className="card-body p-0">
-                                    {post.photoURL && (
+                            <div>
+                                {!post.disabled && (
+                                    <div className="card mb-3" key={post.id}>
+                                    <div className="card-title text-center p-3 post-petsname" style={{fontSize:"25px"}}>{post.petsname}</div>
+                                    <div className="card-body p-0">
+                                        {post.photoURL && (
                                         <img
                                             style={{borderRadius:"0"}}
                                             src={post.photoURL}
                                             alt={post.name}
                                             className="card-img-top pet-photo img-fluid"
                                         />
-                                    )}
-                                    {post.sightings ? (
-                                        <div className="p-2">
-                                            {/* <h6 className="mt-4">Last Seen</h6> */}
-                                            {post.sightings.map((obj) => {
-                                                return (
-                                                    <div className="card mt-2">
-                                                        <div className="card-body" style={{fontSize:"14px"}}>
-                                                            Possibly seen on {obj.street} in {obj.city} <br/> <span className="" style={{fontStyle:"italic", fontSize:"9px"}}>{moment(obj.date).fromNow()}</span>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })}
-                                            <button className="btn btn-lg btn-success mt-2 text-start">I've found my pet</button>
-                                        </div>
-                                    ) : (
-                                        <div className="text-start p-2">
-                                            <p className="mt-2" style={{fontSize:"14px"}}>Pet hasn't been spotted yet</p>
-                                            <button className="btn btn-lg btn-success mt-2 text-start">I've found my pet</button>
-                                        </div>
-                                    )}
-                                    {/* <button className="btn btn-lg btn-success mt-4 text-start">I've found my pet.</button> */}
-                                    {/* <button className="btn btn-lg btn-danger mt-2 ms-2">Edit</button> */}
-                                </div>
+                                                                    )}
+                                                                    {post.sightings ? (
+                                                                        <div className="p-2">
+                                                                            {/* <h6 className="mt-4">Last Seen</h6> */}
+                                                                            {post.sightings.map((obj) => {
+                                                                                return (
+                                                                                    <div className="card mt-2">
+                                                                                        <div className="card-body" style={{fontSize:"14px"}}>
+                                                                                            Possibly seen on {obj.street} in {obj.city} <br/> <span className="" style={{fontStyle:"italic", fontSize:"9px"}}>{moment(obj.date).fromNow()}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                )
+                                                                            })}
+                                                                            <button className="btn btn-lg btn-success mt-2 text-start" onClick={() => { setDisabledPostValue(post.id) }}>I've found my pet</button>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div className="text-start p-2">
+                                                                            <p className="mt-2" style={{fontSize:"14px"}}>Pet hasn't been spotted yet</p>
+                                                                            <button className="btn btn-lg btn-success mt-2 text-start">I've found my pet</button>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                )}
                             </div>
                         ))
                     ) : (
