@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import helpers from '../js/functions';
 import '../css/petfeed.css';
+import '../css/petcards.css';
 import NeighborhoodMap from './map';
 import DualAddressComponent from './dualac';
 import Spinner from './spinner';
@@ -163,11 +164,11 @@ function PetFeed() {
 
   return (
     <div className="container pet-feed-container">
-      <h1 className="pet-feed-title text-center mb-4">Lost Pets</h1>
+      {/* <h1 className="pet-feed-title text-center mb-4">Lost Pets</h1> */}
       {/* {isLoading && <Spinner />} */}
-      <div class="input-group mb-4">
+      <div class="input-group mb-4 search-box">
         <input type="text" 
-          class="form-control" 
+          className="form-control search-input" 
           aria-label="citystate" 
           placeholder="City, State"
           ref={missingRef}
@@ -176,7 +177,7 @@ function PetFeed() {
           id="LPAddress"
           />
         <button 
-          class="input-group-text"
+          class="input-group-text search-btn"
           value={address} 
           onClick={(e) => { handleLostPetSearch() }}>Search
         </button>
@@ -190,48 +191,41 @@ function PetFeed() {
       {pets.length === 0 ? (
         <div className="text-center">No pets have been reported lost in this area.</div>
       ) : (
-        pets.map((pet) => (
-          <div>
-            {!pet.disabled && (
-                        <div key={pet.id} className="row g-3 justify-content-center mb-4">
-                        <div className="col-12 col-md-8 offset-md-2">
-                          <div className="card pet-card h-100">
-                            {pet.photoURL && (
-                              <img
-                                src={pet.photoURL}
-                                alt={pet.name}
-                                className="card-img-top pet-photo img-fluid"
-                              />
-                            )}
-                            <div className="card-body d-flex flex-column">
-                              <h2 className="card-title pet-name">{pet.petsname}</h2>
-                              {/* <p className="card-text pet-description">{pet.description}</p> */}
-                              <div className="card-text pet-description mb-0">
-                                  <span>Missing Location</span>
-                                  <br/>
-                                  <h6>{pet.street}, {pet.city}, {pet.state}</h6>
-                              </div>
-                              <h6>Posted {moment(pet.date).fromNow()}</h6>
-                              <div className="d-flex gap-2">
-                                {/* <button className="btn spot-button">
-                                  Have You Seen Me?
-                                </button> */}
-                                <button
-                                  type="button"
-                                  className="btn btn-primary"
-                                  onClick={() => handleDetailsClick(pet)}
-                                >
-                                  Details
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-            )}
-          </div>
-
-        ))
+        <div className=''>
+          <h1 className="pet-feed-title text-center mb-4 merriweather-black">Lost Pets</h1>
+          <div className="d-flex flex-row gap-3 cards-container">
+        {pets.map(
+          (pet) =>
+            !pet.disabled && (
+              <div key={pet.id} className="card pet-card bg-white">
+                {pet.photoURL && (
+                  <img
+                    src={pet.photoURL}
+                    alt={pet.name}
+                    className="card-img-top pet-photo"
+                  />
+                )}
+                <div className="card-body">
+                  <h2 className="card-title pet-name merriweather-black">{pet.petsname}</h2>
+                  <div className="card-text pet-description">
+                    <strong>Missing Location:</strong>
+                    <br />
+                    {pet.street}
+                    <br /> {pet.city}, {pet.state}
+                  </div>
+                  {/* <h6 className="post-date">Posted {moment(pet.date).fromNow()}</h6> */}
+                  <button
+                    className="btn btn-outline-primary details-button"
+                    onClick={() => handleDetailsClick(pet)}
+                  >
+                    Details
+                  </button>
+                </div>
+              </div>
+            )
+        )}
+      </div>
+        </div>
       )}
 
       {showModal && selectedPet && (
@@ -241,7 +235,7 @@ function PetFeed() {
           style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}
           tabIndex="-1"
         >
-          <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">{selectedPet.petsname} - Details</h5>

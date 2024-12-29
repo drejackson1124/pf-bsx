@@ -1,41 +1,61 @@
-:root {
-    --vibrant-purple: #5D3FD3;
-    --accent-orange: #FF8C42;
-    --text-color: #ffffff;
-    --background-color: #f8f8f8;
-  }
-  
-  .pet-feed-container {
-    background-color: var(--background-color);
-    color: #333;
-    font-family: 'Arial', sans-serif;
-    padding: 4em;
-    scroll-behavior: smooth;
-  }
-  
-  .pet-feed-title {
-    color: var(--vibrant-purple);
-    font-weight: bold;
-  }
-  
-  .pet-feed-error {
-    margin-bottom: 20px;
-  }
-  
-  .pet-card {
-    background: var(--vibrant-purple);
-    border: none;
-    border-radius: 10px;
-    color: var(--text-color);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .pet-photo {
-    /* object-fit: cover; */
-    height: 200px;
-  }
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  /* Enable horizontal scrolling */
+  overflow-x: scroll; 
+  /* Optional: remove vertical scrollbars, if you don’t need them */
+  overflow-y: hidden;
+  gap: 1rem; /* spacing between cards */
+  padding: 1rem; /* some horizontal padding, optional */
+  align-items: stretch;
+}
+
+.pet-feed-container {
+  background-color: var(--background-color);
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  /* padding: 1em; */
+  scroll-behavior: smooth;
+}
+
+.pet-card {
+  height: auto;
+  background: var(--vibrant-purple);
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out;
+  margin-bottom: 1rem; /* add some spacing at bottom if you like */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;  /* so text stacks, then button sits below */
+  justify-content: space-between; /* space the content apart */
+  flex: 0 0 170px;
+}
+
+.pet-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1; /* let body grow to fill available space */
+}
+
+.pet-card:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.pet-photo {
+  height: 200px;
+  object-fit: cover; /* Ensure consistent image dimensions */
+  border-bottom: 1px solid #eee;
+}
+
+.details-button {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 2px solid black;
+  color: black;
+}
   
   .pet-name {
     font-size: 1.3em;
@@ -64,7 +84,7 @@
     background: #e4783a;
   }
   
-  .pac-container {
+.pac-container {
     z-index: 1060 !important; /* Higher than Bootstrap modals */
 }
 
@@ -76,6 +96,20 @@
 .seenLocation {
   font-size: 12px;
 }
+
+.search-box {
+  margin-top: 2em;
+  padding: 2.5em;
+}
+
+.search-input {
+  border: 2px solid black;
+}
+
+.search-btn {
+  border: 2px solid black;
+}
+
 
   
   

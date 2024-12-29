@@ -4,6 +4,7 @@ import NavBar from "./views/nav";
 import PetFeed from "./views/petfeed";
 import ReportLostPet from "./views/report";
 import Footer from "./views/footer";
+import './App.css';
 import LostPetsMap from "./views/lostpetsmap";
 import Posts from "./views/posts";
 import ConfirmIdentity from "./views/confirmidentity";
