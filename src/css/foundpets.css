@@ -1,0 +1,71 @@
+/* Container for the carousel */
+.carousel-container {
+  overflow-x: auto; /* Enables horizontal scrolling */
+  display: flex;
+  justify-content: start;
+  scroll-snap-type: x mandatory; /* Snap scrolling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+  padding: 1em;
+}
+
+/* Wrapper for cards */
+.cards-wrapper {
+  display: flex;
+  gap: 1rem; /* Space between cards */
+}
+
+/* Individual card */
+.found-pet-card {
+  flex: 0 0 100%; /* Each card takes up the full viewport width */
+  max-width: 400px; /* Optionally limit max width */
+  scroll-snap-align: center; /* Center card when scrolling stops */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 300px; /* Ensure consistent height */
+}
+
+/* Photo container */
+.pet-photo-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.pet-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Card body for description and button */
+.card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Description */
+.pet-description {
+  margin-bottom: 1rem;
+}
+
+/* Modal Image */
+.modal-body img {
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.btn-view-pet {
+  border: 2px solid black;
+  color: black;
+}
+
+  
+  
+  

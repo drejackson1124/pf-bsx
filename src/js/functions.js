@@ -27,6 +27,14 @@ const helpers = {
     disablePost: async (obj) => {
         const response = await axios.post(`${backend}/disablepost`, obj);
         return response.data;
+    },
+    reportFoundPet: async (obj) => {
+        const response = await axios.post(`${backend}/found-pet-form`, obj);
+        return response.data;
+    },
+    getFoundPets: async (obj) => {
+        const response = await axios.get(`${backend}/get-found-pets`);
+        return response.data;
     }
 }
 

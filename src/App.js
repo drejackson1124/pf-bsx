@@ -9,6 +9,7 @@ import LostPetsMap from "./views/lostpetsmap";
 import Posts from "./views/posts";
 import ConfirmIdentity from "./views/confirmidentity";
 import { UserProvider } from "./views/UserContext";
+import FoundPetForm from "./views/foundpetform";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                   <Route path="/report" element={<ReportLostPet />} />
                   <Route path="/lostpetsmap" element={<LostPetsMap/>} />
                   <Route path="/confirm-identity" element={<ConfirmIdentity/>} />
+                  <Route path="/found-pet-form" element={<FoundPetForm/>} />
                 </Routes>
               </Router>
           {/* <Footer /> */}

@@ -7,6 +7,7 @@ import DualAddressComponent from './dualac';
 import Spinner from './spinner';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import FoundPets from './foundpets';
 
 function PetFeed() {
   const [pets, setPets] = useState([]);
@@ -164,9 +165,7 @@ function PetFeed() {
 
   return (
     <div className="container pet-feed-container">
-      {/* <h1 className="pet-feed-title text-center mb-4">Lost Pets</h1> */}
-      {/* {isLoading && <Spinner />} */}
-      <div class="input-group mb-4 search-box">
+      <div class="input-group search-box">
         <input type="text" 
           className="form-control search-input" 
           aria-label="citystate" 
@@ -188,11 +187,13 @@ function PetFeed() {
         </div>
       )}
 
+      
+
       {pets.length === 0 ? (
         <div className="text-center">No pets have been reported lost in this area.</div>
       ) : (
-        <div className=''>
-          <h1 className="pet-feed-title text-center mb-4 merriweather-black">Lost Pets</h1>
+        <div className='mt-3'>
+          {/* <h1 className="pet-feed-title text-center mb-4 merriweather-black">Lost Pets</h1> */}
           <div className="d-flex flex-row gap-3 cards-container">
         {pets.map(
           (pet) =>
@@ -227,6 +228,8 @@ function PetFeed() {
       </div>
         </div>
       )}
+
+<FoundPets/>
 
       {showModal && selectedPet && (
         <div
