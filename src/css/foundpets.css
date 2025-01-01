@@ -5,7 +5,8 @@
   justify-content: start;
   scroll-snap-type: x mandatory; /* Snap scrolling */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
-  padding: 1em;
+  padding: 0 1em;
+  margin-bottom: 1em;
 }
 
 /* Wrapper for cards */
@@ -13,6 +14,19 @@
   display: flex;
   gap: 1rem; /* Space between cards */
 }
+
+.cards-wrapper {
+  display: flex;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.cards-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
 
 /* Individual card */
 .found-pet-card {
@@ -65,6 +79,35 @@
   border: 2px solid black;
   color: black;
 }
+
+.foundpet-container {
+  position: relative;
+  color: black;
+  overflow: hidden;
+}
+
+.found-pet-title {
+  position: relative;
+  z-index: 2;
+  /* background: black; */
+}
+
+.curved-header {
+  position: relative; /* Adjusted from absolute */
+  margin-top: -20px; /* Shift the curve closer to the title */
+  z-index: 1; /* Ensure it's behind the title */
+}
+
+.curved-header svg {
+  display: block;
+  width: 100%;
+  height: 100px; /* Adjust the height as needed */
+}
+
+
+
+
+
 
   
   

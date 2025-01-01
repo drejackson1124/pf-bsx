@@ -10,6 +10,19 @@
   align-items: stretch;
 }
 
+.cards-container {
+  display: flex;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.cards-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+
 .pet-feed-container {
   background-color: var(--background-color);
   color: #333;
@@ -108,6 +121,10 @@
 
 .search-btn {
   border: 2px solid black;
+}
+
+.pet-feed-title {
+  padding-top: 1em;
 }
 
 

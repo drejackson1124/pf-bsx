@@ -102,8 +102,11 @@ function PetFeed() {
   const handleLostPetSearch = async () => {
     let obj = { city, state };
     let response = await helpers.findLostPets(obj);
-    let result = JSON.parse(response);
-    setPets(result);
+
+    if(response !== undefined){
+      let result = JSON.parse(response);
+      setPets(result);
+    }
   }
 
   const handlePNChange = (e) => {
@@ -178,7 +181,8 @@ function PetFeed() {
         <button 
           class="input-group-text search-btn"
           value={address} 
-          onClick={(e) => { handleLostPetSearch() }}>Search
+          onClick={(e) => { handleLostPetSearch() }}>
+            <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </div>
       {error && (
@@ -193,7 +197,7 @@ function PetFeed() {
         <div className="text-center">No pets have been reported lost in this area.</div>
       ) : (
         <div className='mt-3'>
-          {/* <h1 className="pet-feed-title text-center mb-4 merriweather-black">Lost Pets</h1> */}
+          <h1 className="pet-feed-title text-center mb-4 merriweather-black">Lost Pets</h1>
           <div className="d-flex flex-row gap-3 cards-container">
         {pets.map(
           (pet) =>
