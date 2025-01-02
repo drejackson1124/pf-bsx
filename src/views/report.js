@@ -15,7 +15,7 @@ const ReportLostPet = () => {
   const [description, setDescription] = useState("");
   const [petsname, setPetsname] = useState("");
   const [photoURL, setPhotoURL] = useState("");
-  const [petType, updatePetType] = useState("cat");
+  const [petType, setPetType] = useState("cat");
   const [date, setDate] = useState("");
   const [passcode, setPasscode] = useState("");
   const [activeSubmit, setActiveSubmit] = useState(false);
@@ -121,7 +121,7 @@ const ReportLostPet = () => {
           }}/>
         </div>
 
-        <ul class="list-group mb-3">
+        {/* <ul class="list-group mb-3">
         <p>Pet Type</p>
         <li class="list-group-item">
             <input required class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="firstRadio" checked={petType === "cat"} onChange={() => { updatePetType("cat") }}/>
@@ -135,7 +135,44 @@ const ReportLostPet = () => {
             <input required class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="thirdRadio" checked={petType === "other"} onChange={() => { updatePetType("other") }}/>
             <label class="form-check-label" for="thirdRadio">Other</label>
         </li>
-        </ul>
+        </ul> */}
+
+              {/* Pet Type */}
+      <div className="mb-3">
+        <label className="form-label">Pet Type</label>
+        <div>
+          <label className="me-3">
+            <input
+              type="radio"
+              value="Cat"
+              name="petType"
+              onChange={(e) => setPetType(e.target.value)}
+              checked={petType === 'Cat'}
+            />{' '}
+            Cat
+          </label>
+          <label className="me-3">
+            <input
+              type="radio"
+              value="Dog"
+              name="petType"
+              onChange={(e) => setPetType(e.target.value)}
+              checked={petType === 'Dog'}
+            />{' '}
+            Dog
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="Other"
+              name="petType"
+              onChange={(e) => setPetType(e.target.value)}
+              checked={petType === 'Other'}
+            />{' '}
+            Other
+          </label>
+        </div>
+      </div>
 
         <div className="mb-3">
           <label htmlFor="description" className="form-label">Please give a description of your pet.</label>

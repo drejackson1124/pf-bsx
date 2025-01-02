@@ -238,6 +238,7 @@ function FoundPetForm() {
   const [photo, setPhoto] = useState(null); // For storing the image file
   const [petType, setPetType] = useState(''); // New state for pet type
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passcode, setPasscode] = useState("");
 
   // 1. Use ref for autocomplete
   const locationRef = useRef(null);
@@ -301,7 +302,7 @@ function FoundPetForm() {
     e.preventDefault();
 
     // Basic validation for required fields
-    if (!description || !street || !city || !state || !contactInfo || !petType) {
+    if (!description || !street || !city || !state || !contactInfo || !petType || !passcode) {
       alert('All fields must have a value!');
       return;
     }
@@ -318,6 +319,7 @@ function FoundPetForm() {
         timeFound: moment().format(),
         contactInfo,
         photo,
+        passcode
       };
 
       // Example call to your backend
@@ -446,19 +448,6 @@ function FoundPetForm() {
         </div>
       </div>
 
-      {/* Contact Info */}
-      <div className="mb-3">
-        <label htmlFor="contactInfo" className="form-label">Your Contact Info</label>
-        <input
-          type="text"
-          id="contactInfo"
-          className="form-control"
-          required
-          value={contactInfo}
-          onChange={(e) => setContactInfo(e.target.value)}
-        />
-      </div>
-
       {/* Upload Image (optional) */}
       <div className="mb-3">
         <label htmlFor="photo" className="form-label">Pet Photo</label>
@@ -470,6 +459,19 @@ function FoundPetForm() {
           accept="image/*"
           className="form-control"
           onChange={handlePhotoChange}
+        />
+      </div>
+
+      {/* Contact Info */}
+      <div className="mb-3">
+        <label htmlFor="contactInfo" className="form-label">Your Contact Info (Email)</label>
+        <input
+          type="text"
+          id="contactInfo"
+          className="form-control"
+          required
+          value={contactInfo}
+          onChange={(e) => setContactInfo(e.target.value)}
         />
       </div>
 

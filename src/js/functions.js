@@ -35,6 +35,18 @@ const helpers = {
     getFoundPets: async (obj) => {
         const response = await axios.get(`${backend}/get-found-pets`);
         return response.data;
+    },
+    claimPet: async (obj) => {
+        const response = await axios.post(`${backend}/claim-pet`, obj);
+        return response.data;
+    },
+    signUp: async (obj) => {
+        const response = await axios.post(`${backend}/signup`, obj);
+        return response.data;
+    },
+    login: async (obj) => {
+        const response = await axios.post(`${backend}/login`, obj);
+        return response.data;
     }
 }
 

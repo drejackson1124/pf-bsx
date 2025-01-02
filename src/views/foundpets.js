@@ -7,6 +7,10 @@ import moment from "moment";
 const FoundPets = () => {
   const [foundPets, setFoundPets] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
+  const [showClaimForm, setShowClaimForm] = useState(false);
+  const [name, setName] = useState("");
+  const [contactinfo, setContactInfo] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchFoundPets = async () => {
@@ -27,26 +31,42 @@ const FoundPets = () => {
 
   const closeModal = () => {
     setSelectedPet(null);
+    setShowClaimForm(false);
   };
+
+  const openClaimForm = () => {
+    setShowClaimForm(true);
+  };
+
+  const handleClaimSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const result = await helpers.claimPet({name, contactinfo, message, date: moment().format(), id: selectedPet.id});
+      console.log('API Response:', result);
+  
+      if (result.statusCode === 200) {
+        alert("Claim submitted successfully!");
+        setShowClaimForm(false);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error('Error submitting claim:', error);
+      alert('An unexpected error occurred.');
+    }
+  };
+  
+
 
   if (foundPets.length === 0) {
     return <Spinner />;
   } else {
     return (
       <div className="foundpet-container">
-        <h1 className="found-pet-title text-center pt-4 pb-4 merriweather-black mb-0">Spotted Pets</h1>
-        {/* <div className="curved-header">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 320"
-          >
-            <path
-              fill="black"
-              fillOpacity="1"
-              d="M0,160L48,176C96,192,192,224,288,218.7C384,213,480,171,576,138.7C672,107,768,85,864,74.7C960,64,1056,64,1152,80C1248,96,1344,128,1392,144L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
-            ></path>
-          </svg>
-        </div> */}
+        <h1 className="found-pet-title text-center pt-4 pb-4 merriweather-black mb-0">
+          Spotted Pets
+        </h1>
         <div className="carousel-container">
           <div className="cards-wrapper">
             {foundPets.map((pet) => (
@@ -78,7 +98,7 @@ const FoundPets = () => {
           </div>
 
           {/* Modal for detailed view */}
-          {selectedPet && (
+          {selectedPet && !showClaimForm && (
             <div
               className="modal fade show"
               style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
@@ -103,18 +123,21 @@ const FoundPets = () => {
                       <strong>Description:</strong> {selectedPet.description}
                     </p>
                     <p>
-                      <strong>Location Found:</strong> {selectedPet.street},{" "}
+                      <strong>Location Found:</strong> {selectedPet.street}, {" "}
                       {selectedPet.city}, {selectedPet.state}
                     </p>
                   </div>
                   <div className="modal-footer">
                     <button
                       className="btn btn-primary"
-                      onClick={() => alert("Claim pet functionality here.")}
+                      onClick={openClaimForm}
                     >
                       Claim Pet
                     </button>
-                    <button className="btn btn-secondary" onClick={closeModal}>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={closeModal}
+                    >
                       Close
                     </button>
                   </div>
@@ -122,8 +145,81 @@ const FoundPets = () => {
               </div>
             </div>
           )}
-        </div>
 
+          {/* Modal for claim form */}
+          {selectedPet && showClaimForm && (
+            <div
+              className="modal fade show"
+              style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+            >
+              <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Claim Pet</h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      onClick={closeModal}
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <img src={selectedPet.photoURL} className="img img-fluid"/>
+                    <form onSubmit={handleClaimSubmit}>
+                      <div className="mb-3">
+                        <label htmlFor="name" className="form-label">
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          className="form-control"
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="contactInfo" className="form-label">
+                          Contact Info (Email)
+                        </label>
+                        <input
+                          type="text"
+                          id="contactInfo"
+                          className="form-control"
+                          onChange={(e) => setContactInfo(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="message" className="form-label">
+                          Message
+                        </label>
+                        <textarea
+                          id="message"
+                          className="form-control"
+                          rows="3"
+                          onChange={(e) => setMessage(e.target.value)}
+                          required
+                        ></textarea>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="submit" className="btn btn-primary">
+                          Submit Claim
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={closeModal}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
