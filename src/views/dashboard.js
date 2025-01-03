@@ -177,11 +177,31 @@ import React, { useEffect, useState } from "react";
 import "../css/dashboard.css";
 import Spinner from "./spinner";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
+import helpers from "../js/functions";
 
-const Dashboard = ({ userPets }) => {
+const Dashboard = ({ userPets, email }) => {
     const [pets, setPets] = useState(null);
     const [selectedMessages, setSelectedMessages] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        const fetchPets = async () => {
+            try {
+                setLoading(true); 
+                const response = await helpers.dashboardPets({ email }); 
+                setPets(JSON.parse(response.body)); 
+            } catch (error) {
+                console.error("Error fetching pets:", error);
+            } finally {
+                setLoading(false); // Stop loading
+            }
+        };
+
+        fetchPets();
+    }, [location]);
 
     useEffect(() => {
         setPets(userPets);
@@ -196,6 +216,10 @@ const Dashboard = ({ userPets }) => {
         setSelectedMessages([]);
         setShowModal(false);
     };
+
+    if (loading) {
+        return <Spinner />;
+    }
 
     if (!pets) {
         return <Spinner />;

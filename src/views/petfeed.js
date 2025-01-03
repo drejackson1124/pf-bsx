@@ -117,7 +117,6 @@ function PetFeed() {
   };
 
   const onAddressChange = (obj) => {
-    console.log(obj.street, obj.street.length);
     if(obj.street.length === 0){
       alert('Please enter a street.');
     } else {
@@ -194,7 +193,7 @@ function PetFeed() {
       
 
       {pets.length === 0 ? (
-        <div className="text-center">No pets have been reported lost in this area.</div>
+        <div className="text-center mt-5 merriweather-black">No pets have been reported lost in this area.</div>
       ) : (
         <div className='mt-3'>
           <h1 className="pet-feed-title text-center mb-4 merriweather-black">Lost Pets</h1>
@@ -220,7 +219,7 @@ function PetFeed() {
                   </div>
                   {/* <h6 className="post-date">Posted {moment(pet.date).fromNow()}</h6> */}
                   <button
-                    className="btn btn-outline-primary details-button"
+                    className="btn btn-outline-primary details-button merriweather-black"
                     onClick={() => handleDetailsClick(pet)}
                   >
                     Details

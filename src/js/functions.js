@@ -47,6 +47,10 @@ const helpers = {
     login: async (obj) => {
         const response = await axios.post(`${backend}/login`, obj);
         return response.data;
+    },
+    dashboardPets: async (obj) => {
+        const response = await axios.post(`${backend}/get-dashboard-pets`, obj);
+        return response.data;
     }
 }
 

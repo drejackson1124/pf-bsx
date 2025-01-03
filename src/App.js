@@ -18,6 +18,7 @@ import Dashboard from "./views/dashboard";
 function App() {
   const [isAuthenticated, setisAuthenticated] = useState(false);
   const [userPets, setUserPets] = useState([]);
+  const [email, setEmail] = useState("");
 
   const signOut = () => {
     setisAuthenticated(false);
@@ -36,12 +37,12 @@ function App() {
                   <Route path="/confirm-identity" element={<ConfirmIdentity/>} />
                   <Route path="/found-pet-form" element={<FoundPetForm/>} />
                   <Route path="/signup" element={<SignUp/>} />
-                  <Route path="/login" element={<Login setAuth={setisAuthenticated} setUserPets={setUserPets}/>} />
+                  <Route path="/login" element={<Login setAuth={setisAuthenticated} setUserPets={setUserPets} setemail={setEmail}/>} />
                   
                   {/* Protected Route */}
                   <Route
                     path="/dashboard"
-                    element={isAuthenticated ? <Dashboard userPets={userPets} signout={signOut}/> : <Navigate to="/login" />}
+                    element={isAuthenticated ? <Dashboard userPets={userPets} signout={signOut} email={email}/> : <Navigate to="/login" />}
                   />
                 </Routes>
               </Router>

@@ -179,7 +179,7 @@ const FoundPets = () => {
                       </div>
                       <div className="mb-3">
                         <label htmlFor="contactInfo" className="form-label">
-                          Contact Info (Email)
+                          Email or Phone Number
                         </label>
                         <input
                           type="text"

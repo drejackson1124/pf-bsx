@@ -25,6 +25,7 @@ const Login = (props) => {
         alert("You'll now be redirected to the dashboard.");
         props.setAuth(true);
         props.setUserPets(JSON.parse(result.body));
+        props.setemail(email);
         navigate('/dashboard');
     } else {
         alert("Something went wrong. Please try again.");
