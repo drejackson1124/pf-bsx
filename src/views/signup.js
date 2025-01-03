@@ -44,7 +44,8 @@ const SignUp = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Sign Up or <Link to="/login" style={{textDecoration:"none"}}>Log In</Link></h2>
+      <h2 className="text-center mb-4">Sign Up</h2>
+      <p className="text-center">(or <Link to="/login" className="blue" style={{textDecoration:"none"}}>log in</Link>)</p>
       <form onSubmit={handleSubmit} style={{ maxWidth: "400px", margin: "0 auto" }}>
         {/* Email */}
         <div className="mb-3">

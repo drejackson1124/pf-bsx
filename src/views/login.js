@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import helpers from "../js/functions";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -24,16 +24,17 @@ const Login = (props) => {
     if(result.statusCode === 200){
         alert("You'll now be redirected to the dashboard.");
         props.setAuth(true);
+        props.setUserPets(JSON.parse(result.body));
         navigate('/dashboard');
     } else {
         alert("Something went wrong. Please try again.");
-        console.log(result);
     }
   };
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Welcome, log in below.</h2>
+      <h2 className="text-center mb-4">Log In</h2>
+      <p className="text-center">(or <Link to="/signup" className="blue" style={{textDecoration:"none"}}>sign up</Link>)</p>
       <form onSubmit={handleSubmit} style={{ maxWidth: "400px", margin: "0 auto" }}>
         {/* Email */}
         <div className="mb-3">

@@ -21,6 +21,9 @@ const NavBar = (props) => {
                 <div className="navbar-nav">
                     <Link to="/dashboard" className="nav-link black" aria-current="page">Dashboard</Link>
                 </div>
+                <div className="navbar-nav">
+                    <div className="nav-link black btn-outline-primary" onClick={() => {props.signout()}}>Sign Out</div>
+                </div>
                 </div>
             </div>
             </nav>
