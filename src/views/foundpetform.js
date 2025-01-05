@@ -126,7 +126,7 @@ function FoundPetForm() {
   // 4. Render the form
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '0 auto' }} encType="multipart/form-data">
-      <h2>Report Found Pet</h2>
+      <h2 className='mt-3 text-center'>Report Found Pet</h2>
       
       {/* Pet Description */}
       <div className="mb-3">

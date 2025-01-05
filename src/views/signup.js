@@ -33,10 +33,10 @@ const SignUp = () => {
     const result = await helpers.signUp({email, password, date: moment().format()});
     if(result.statusCode === 200){
         alert("You'll now be redirected to our login page.");
-        navigate('/');
+        navigate('/login');
     } else if (result.statusCode === 409) {
         alert("This user already exists. Please visit our log in page.");
-        navigate('/');
+        navigate('/login');
     } else {
         alert("Something went wrong. Please email us at pawfindernola@gmail.com");
     }

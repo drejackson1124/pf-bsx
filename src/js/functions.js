@@ -51,7 +51,19 @@ const helpers = {
     dashboardPets: async (obj) => {
         const response = await axios.post(`${backend}/get-dashboard-pets`, obj);
         return response.data;
-    }
+    },
+    userFoundPet: async (obj) => {
+        const response = await axios.post(`${backend}/user-found-pet`, obj);
+        return response.data;
+    },
+    petReunited: async (obj) => {
+        const response = await axios.post(`${backend}/reunited`, obj);
+        return response.data;
+    },
+    getFoundReunitedPets: async () => {
+        const response = await axios.get(`${backend}/get-found-reunited-pets`);
+        return response.data;
+    },
 }
 
 export default helpers;

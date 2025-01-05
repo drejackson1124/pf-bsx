@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import "../css/dashboard.css";
 import Spinner from "./spinner";
 import moment from "moment";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import helpers from "../js/functions";
 
 const Dashboard = ({ userPets, email }) => {
     const [pets, setPets] = useState(null);
     const [selectedMessages, setSelectedMessages] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
     const [refresh, setRefresh] = useState(false);
+    const [selectedSightings, setSelectedSightings] = useState([]);
 
     useEffect(() => {
         const fetchPets = async () => {
@@ -50,14 +52,42 @@ const Dashboard = ({ userPets, email }) => {
         setPets(userPets);
     }, [userPets]);
 
+    const userFoundPet = async (id) => {
+        const result = await helpers.userFoundPet({id})
+        if(result.statusCode === 200){
+            refresh === true ? setRefresh(false) : setRefresh(true);
+        } else {
+            alert('Hmmm, something went wrong. Please try again.')
+        }
+    }
+
+    const reunitedPet = async (id) => {
+        const result = await helpers.petReunited({id});
+        if(result.statusCode === 200){
+            refresh === true ? setRefresh(false) : setRefresh(true);
+        } else {
+            alert("Something went wrong. Please try again.");
+        }
+    }
+
     const openModal = (messages) => {
         setSelectedMessages(messages);
         setShowModal(true);
     };
 
+    const openModal2 = (messages) => {
+        setSelectedSightings(messages);
+        setShowModal2(true);
+    };
+
     const closeModal = () => {
         setSelectedMessages([]);
         setShowModal(false);
+    };
+
+    const closeModal2 = () => {
+        setSelectedSightings([]);
+        setShowModal2(false);
     };
 
     if (loading) {
@@ -75,17 +105,30 @@ const Dashboard = ({ userPets, email }) => {
         ...(foundpets || [])
     ].filter((pet) => pet.disabled).length;
 
+    const reunitedPetsCount = [
+        ...(foundpets || [])
+    ].filter((pet) => pet.reunited).length;
+
+    let totalPets = archivedPetsCount + reunitedPetsCount;
+
     return (
         <div className="dashboard">
             {/* Archive Section */}
-            <div className="archive-section text-center mt-4">
+            <div className="d-flex archive-section justify-content-between mt-4 mx-3">
                 <h5>
-                    {/* <span className="badge bg-secondary merriweather-black">
-                        {archivedPetsCount} pets archived
-                    </span> */}
-                    {/* <span className="badge bg-success ms-2 merriweather-black" onClick={() => { setRefresh(true) }}>
-                        <i class="fa-solid fa-rotate-right"></i> Refresh
-                    </span> */}
+                    <span className="badge bg-secondary merriweather-black mt-2">
+                         {archivedPetsCount} pets archived
+                    </span>
+                </h5>
+                {/* <h5>
+                    <span className="badge bg-success merriweather-black mt-2">
+                         {reunitedPetsCount} pets reunited
+                     </span>
+                </h5> */}
+                <h5>
+                    <span className="badge bg-success merriweather-black mt-2">
+                         {reunitedPetsCount} pets reunited
+                     </span>
                 </h5>
             </div>
 
@@ -98,9 +141,9 @@ const Dashboard = ({ userPets, email }) => {
                             <div key={index} className="card my-3 dashboard-pet-cards">
                                 <div className="card-body">
                                     <div className="d-flex align-items-center">
-                                        <img 
-                                            src={pet.photoURL} 
-                                            alt={pet.petsname} 
+                                        <img
+                                            src={pet.photoURL}
+                                            alt={pet.petsname}
                                             className="lost-pet-img"
                                         />
                                         <div className="user-pet-info ms-3">
@@ -108,7 +151,22 @@ const Dashboard = ({ userPets, email }) => {
                                             <p className="mb-0">{pet.description}</p>
                                         </div>
                                     </div>
-                                    <button className="btn btn-outline-primary mt-3 merriweather-black">I found my pet</button>
+                                    <div className="d-flex justify-content-between mt-3">
+                                        <button
+                                            className="btn btn-outline-primary merriweather-black"
+                                            onClick={() => userFoundPet(pet.id)}
+                                        >
+                                            I found my pet
+                                        </button>
+                                        {Array.isArray(pet.sightings) && pet.sightings.length > 0 && (
+                                            <button
+                                                className="btn btn-outline-primary merriweather-black"
+                                                onClick={() => openModal2(pet.sightings)}
+                                            >
+                                                Pet Sightings
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         )
@@ -118,6 +176,7 @@ const Dashboard = ({ userPets, email }) => {
                         <div className="card-body">
                             <i className="fa-solid fa-cat x-icon"></i>
                             <h5>No lost pets posted</h5>
+                            <span className="">post a lost pet <Link to="/report" className="blue">here</Link></span>
                         </div>
                     </div>
                 )}
@@ -126,9 +185,9 @@ const Dashboard = ({ userPets, email }) => {
             {/* Found Pets Section */}
             <section>
                 <h3 className="text-center mt-4 merriweather-black">Your Found Pets</h3>
-                {foundpets && foundpets.length > 0 ? (
+                {foundpets && foundpets.length - reunitedPetsCount > 0 ? (
                     foundpets.map((pet, index) =>
-                        !pet.disabled && (
+                        !pet.disabled && !pet.reunited && (
                             <div key={index} className="card my-3 dashboard-pet-cards">
                                 <div className="card-body text-start">
                                     <img
@@ -153,7 +212,8 @@ const Dashboard = ({ userPets, email }) => {
                                                     {/* <span className="badge bg-primary ms-1">
                                                         {pet.messages.length}
                                                     </span> */}
-                                                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger claim-badge">
+                                                        {pet.messages.length}
                                                         <span class="visually-hidden">New alerts</span>
                                                     </span>
                                                 </button>
@@ -165,7 +225,9 @@ const Dashboard = ({ userPets, email }) => {
                                                     No Claims
                                                 </button>
                                             )}
-                                            <button class="btn btn-outline-success" type="button">Reunited with Owner</button>
+                                            <button class="btn btn-outline-primary" type="button" onClick={() => {
+                                                reunitedPet(pet.id);
+                                            }}>Reunited with Owner</button>
                                             <button class="btn btn-outline-secondary" type="button">Archive</button>
                                         </div>
                                     </h5>
@@ -178,6 +240,7 @@ const Dashboard = ({ userPets, email }) => {
                         <div className="card-body">
                             <i className="fa-solid fa-dog x-icon"></i>
                             <h5>No found pets posted</h5>
+                            <span className="">post a found pet <Link to="/found-pet-form" className="blue">here</Link></span>
                         </div>
                     </div>
                 )}
@@ -229,11 +292,61 @@ const Dashboard = ({ userPets, email }) => {
                     </div>
                 </div>
             )}
+
+            {showModal2 && (
+                <div
+                    className="modal fade show"
+                    style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                >
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Reported Sightings</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={closeModal2}
+                                ></button>
+                            </div>
+                            <div className="modal-body">
+                                {selectedSightings.map((sighting, index) => (
+                                    <div key={index} className="card mb-3">
+                                        <div className="card-body">
+                                            <p>
+                                                <strong>Location:</strong> {sighting.street},{" "}
+                                                {sighting.city}, {sighting.state}
+                                            </p>
+                                            <p>
+                                                <strong>Date:</strong> {moment(sighting.date).format("LL")}
+                                            </p>
+                                            {/* <p>
+                                                <strong>Contact:</strong> {sighting.phoneNumber}
+                                            </p> */}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="modal-footer">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={closeModal2}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
 
 export default Dashboard;
+
+
+
 
 
 

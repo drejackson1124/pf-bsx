@@ -13,6 +13,7 @@ import FoundPetForm from "./views/foundpetform";
 import SignUp from "./views/signup";
 import Login from "./views/login";
 import Dashboard from "./views/dashboard";
+import PetAlerts from "./views/alert";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <div className="App">
               <Router>
                 <NavBar auth={isAuthenticated} signout={signOut}/>
+                <PetAlerts/>
                 <Routes>
                   <Route path="/" element={<PetFeed />} />
                   <Route path="/report" element={<ReportLostPet />} />

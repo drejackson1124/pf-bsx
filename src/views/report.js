@@ -79,8 +79,7 @@ const ReportLostPet = () => {
         petsname,
         email,
         photoURL,
-        date: moment().format(),
-        passcode
+        date: moment().format()
     };
 
     if(!obj.photoURL || !obj.email){
@@ -113,7 +112,7 @@ const ReportLostPet = () => {
   return (
     <div className="text-center">
       <form className="reportForm">
-
+        <h2 className='mt-3 text-center'>Report Lost Pet</h2>
         <div className="mb-3">
           <label htmlFor="lostPetsName" className="form-label">Pet's Name</label>
           <input type="text" className="form-control form-control-lg" id="lostPetsName" onChange={(e) => {
@@ -121,23 +120,7 @@ const ReportLostPet = () => {
           }}/>
         </div>
 
-        {/* <ul class="list-group mb-3">
-        <p>Pet Type</p>
-        <li class="list-group-item">
-            <input required class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="firstRadio" checked={petType === "cat"} onChange={() => { updatePetType("cat") }}/>
-            <label class="form-check-label" for="firstRadio">Cat</label>
-        </li>
-        <li class="list-group-item">
-            <input required class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="secondRadio" checked={petType === "dog"} onChange={() => { updatePetType("dog") }}/>
-            <label class="form-check-label" for="secondRadio">Dog</label>
-        </li>
-        <li class="list-group-item">
-            <input required class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="thirdRadio" checked={petType === "other"} onChange={() => { updatePetType("other") }}/>
-            <label class="form-check-label" for="thirdRadio">Other</label>
-        </li>
-        </ul> */}
-
-              {/* Pet Type */}
+      {/* Pet Type */}
       <div className="mb-3">
         <label className="form-label">Pet Type</label>
         <div>
@@ -174,20 +157,24 @@ const ReportLostPet = () => {
         </div>
       </div>
 
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">Please give a description of your pet.</label>
-          <input required type="text" className="form-control form-control-lg" id="description" onChange={(e) => {
-            setDescription(e.target.value);
-          }}/>
-        </div>
+      <div className="mb-3">
+      <label htmlFor="description" className="form-label">
+        Please give a description of your pet.
+      </label>
+      <textarea
+        required
+        className="form-control form-control-lg"
+        id="description"
+        rows="4" // Adjust the rows to control the height of the textarea
+        maxLength="300" // Limit the number of characters
+        placeholder="Provide details about your pet (e.g., color, breed, special markings, etc.)"
+        onChange={(e) => {
+          setDescription(e.target.value);
+        }}
+      />
+      <small className="text-muted">Maximum 300 characters.</small>
+    </div>
 
-        <div className="mb-3">
-          <label required htmlFor="passcode" className="form-label">Please provide a passcode between 4-6 characters.</label>
-          <input minLength="4" maxLength="6" required type="text" className="form-control form-control-lg" id="passcode" onChange={(e) => {
-            setPasscode(e.target.value);
-          }}/>
-          <div id="emailHelp" className="form-text">You'll be able to view your postings with this passcode.</div>
-        </div>
 
         <div className="mb-3">
           <label htmlFor="missing" className="form-label">Where did your pet go missing?</label>
