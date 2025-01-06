@@ -77,7 +77,7 @@ function FoundPetForm() {
     e.preventDefault();
 
     // Basic validation for required fields
-    if (!description || !street || !city || !state || !contactInfo || !petType || !passcode) {
+    if (!description || !street || !city || !state || !contactInfo || !petType) {
       alert('All fields must have a value!');
       return;
     }
@@ -93,8 +93,7 @@ function FoundPetForm() {
         petType,
         timeFound: moment().format(),
         contactInfo,
-        photo,
-        passcode
+        photo
       };
 
       // Example call to your backend
@@ -125,20 +124,23 @@ function FoundPetForm() {
 
   // 4. Render the form
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '0 auto' }} encType="multipart/form-data">
+    <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '0 auto', marginBottom:"2em" }} encType="multipart/form-data">
       <h2 className='mt-3 text-center'>Report Found Pet</h2>
       
       {/* Pet Description */}
       <div className="mb-3">
         <label htmlFor="description" className="form-label">Pet Description</label>
-        <input
+        {/* <input
           type="text"
           id="description"
           className="form-control"
           required
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-        />
+        /> */}
+        <div class="form-floating">
+          <textarea class="form-control" id="floatingTextarea2" style={{height:"100px"}} onChange={(e) => setDescription(e.target.value)}></textarea>
+        </div>
       </div>
 
       {/* Google Autocomplete for location */}

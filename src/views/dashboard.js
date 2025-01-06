@@ -14,6 +14,9 @@ const Dashboard = ({ userPets, email }) => {
     const location = useLocation();
     const [refresh, setRefresh] = useState(false);
     const [selectedSightings, setSelectedSightings] = useState([]);
+    const [userConfirm, setUserConfirm] = useState(false);
+    const [userConfirmReunited, setUserConfirmReunited] = useState(false);
+    const [petId, setPetId] = useState("");
 
     useEffect(() => {
         const fetchPets = async () => {
@@ -56,9 +59,20 @@ const Dashboard = ({ userPets, email }) => {
         const result = await helpers.userFoundPet({id})
         if(result.statusCode === 200){
             refresh === true ? setRefresh(false) : setRefresh(true);
+            return true;
         } else {
-            alert('Hmmm, something went wrong. Please try again.')
+            alert('Hmmm, something went wrong. Please try again.');
         }
+    }
+
+    const updateUserConfirm = (id) => {
+        setUserConfirm(true);
+        setPetId(id);
+    }
+
+    const updateUserConfirmReunited = (id) => {
+        setUserConfirmReunited(true);
+        setPetId(id);
     }
 
     const reunitedPet = async (id) => {
@@ -90,6 +104,24 @@ const Dashboard = ({ userPets, email }) => {
         setShowModal2(false);
     };
 
+    const closeUCModal = async () => {
+        setUserConfirm(false);
+        const result = await userFoundPet(petId);
+    };
+
+    const closeUCModal2 = () => {
+        setUserConfirm(false);
+    };
+
+    const closeUCRModal = async () => {
+        setUserConfirmReunited(false);
+        const result = await reunitedPet(petId);
+    };
+
+    const closeUCRModal2 = () => {
+        setUserConfirmReunited(false);
+    };
+
     if (loading) {
         return <Spinner />;
     }
@@ -116,7 +148,7 @@ const Dashboard = ({ userPets, email }) => {
             {/* Archive Section */}
             <div className="d-flex archive-section justify-content-between mt-4 mx-3">
                 <h5>
-                    <span className="badge bg-secondary merriweather-black mt-2">
+                    <span className="badge archived-badge mt-2">
                          {archivedPetsCount} pets archived
                     </span>
                 </h5>
@@ -126,7 +158,7 @@ const Dashboard = ({ userPets, email }) => {
                      </span>
                 </h5> */}
                 <h5>
-                    <span className="badge bg-success merriweather-black mt-2">
+                    <span className="badge reunited-badge mt-2">
                          {reunitedPetsCount} pets reunited
                      </span>
                 </h5>
@@ -151,19 +183,19 @@ const Dashboard = ({ userPets, email }) => {
                                             <p className="mb-0">{pet.description}</p>
                                         </div>
                                     </div>
-                                    <div className="d-flex justify-content-between mt-3">
+                                    <div className="d-flex justify-content-around mt-3">
                                         <button
-                                            className="btn btn-outline-primary merriweather-black"
-                                            onClick={() => userFoundPet(pet.id)}
+                                            className="btn btn-outline-success"
+                                            onClick={() => updateUserConfirm(pet.id)}
                                         >
-                                            I found my pet
+                                            I found my pet <i class="fa-thin fa-face-laugh ms-1"></i>
                                         </button>
                                         {Array.isArray(pet.sightings) && pet.sightings.length > 0 && (
                                             <button
-                                                className="btn btn-outline-primary merriweather-black"
+                                                className="btn btn-outline-primary"
                                                 onClick={() => openModal2(pet.sightings)}
                                             >
-                                                Pet Sightings
+                                                Pet Sightings <i class="fa-thin fa-magnifying-glass ms-1"></i>
                                             </button>
                                         )}
                                     </div>
@@ -201,14 +233,14 @@ const Dashboard = ({ userPets, email }) => {
                                     </span>
                                     <h5 className="mt-3">
                                         {pet.petsname}
-                                        <div class="d-grid gap-2">
+                                        <div class="d-flex justify-content-around">
                                             {Array.isArray(pet.messages) && pet.messages.length > 0 ? (
                                                 <button
                                                     type="button"
                                                     className="btn btn-outline-primary position-relative merriweather-black"
                                                     onClick={() => openModal(pet.messages)}
                                                 >
-                                                    Claims
+                                                    Claims <i class="fa-thin fa-bell ms-2"></i>
                                                     {/* <span className="badge bg-primary ms-1">
                                                         {pet.messages.length}
                                                     </span> */}
@@ -222,13 +254,13 @@ const Dashboard = ({ userPets, email }) => {
                                                     type="button"
                                                     className="btn btn-outline-secondary disabled"
                                                 >
-                                                    No Claims
+                                                    No Claims <i class="fa-thin fa-bell ms-2"></i>
                                                 </button>
                                             )}
-                                            <button class="btn btn-outline-primary" type="button" onClick={() => {
-                                                reunitedPet(pet.id);
-                                            }}>Reunited with Owner</button>
-                                            <button class="btn btn-outline-secondary" type="button">Archive</button>
+                                            <button class="btn btn-outline-success" type="button" onClick={() => {
+                                                updateUserConfirmReunited(pet.id);
+                                            }}>Reunited with Owner <i class="fa-sharp fa-thin fa-face-smile-beam ms-2"></i></button>
+                                            {/* <button class="btn btn-outline-secondary" type="button">Archive <i class="fa-thin fa-file-zipper ms-2"></i></button> */}
                                         </div>
                                     </h5>
                                 </div>
@@ -329,10 +361,62 @@ const Dashboard = ({ userPets, email }) => {
                             <div className="modal-footer">
                                 <button
                                     type="button"
-                                    className="btn btn-secondary"
+                                    className="btn btn-outline-secondary"
                                     onClick={closeModal2}
                                 >
                                     Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {userConfirm && (
+                <div
+                    className="modal fade show"
+                    style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                >
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" style={{fontSize:"30px", fontWeight:"100"}}>Please confirm that you've found your pet.</h5>
+                            </div>
+                            <div className="modal-body">
+                                <button className="btn btn-outline-success" onClick={closeUCModal} style={{fontSize:"25px", fontWeight:"100"}}>Yes, I've found my pet.</button>
+                            </div>
+                            <div className="modal-footer">
+                                <button
+                                    className="btn btn-outline-secondary"
+                                    onClick={closeUCModal2}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {userConfirmReunited && (
+                <div
+                    className="modal fade show"
+                    style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                >
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" style={{fontSize:"30px", fontWeight:"100"}}>Please confirm that you've reunited this pet with their family.</h5>
+                            </div>
+                            <div className="modal-body">
+                                <button className="btn btn-outline-success" onClick={closeUCRModal} style={{fontSize:"25px", fontWeight:"100"}}>Yes, I've reunited this pet.</button>
+                            </div>
+                            <div className="modal-footer">
+                                <button
+                                    className="btn btn-outline-secondary"
+                                    onClick={closeUCRModal2}
+                                >
+                                    Cancel
                                 </button>
                             </div>
                         </div>

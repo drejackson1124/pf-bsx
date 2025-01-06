@@ -43,7 +43,6 @@ const FoundPets = () => {
   
     try {
       const result = await helpers.claimPet({name, contactinfo, message, date: moment().format(), id: selectedPet.id});
-      console.log('API Response:', result);
   
       if (result.statusCode === 200) {
         alert("Claim submitted successfully!");
@@ -70,8 +69,9 @@ const FoundPets = () => {
         <div className="carousel-container">
           <div className="cards-wrapper">
             {foundPets.map((pet) => (
-              <div key={pet.id} className="card found-pet-card">
-                {/* Photo */}
+              !pet.reunited && (
+                <div key={pet.id} className="card found-pet-card">
+                
                 <div className="pet-photo-container">
                   <img
                     src={pet.photoURL}
@@ -79,11 +79,11 @@ const FoundPets = () => {
                     className="pet-photo"
                   />
                 </div>
-                {/* Description and Button */}
+                
                 <div className="card-body">
                   <p className="pet-description">
-                    {pet.description.length > 100
-                      ? `${pet.description.slice(0, 100)}...`
+                    {pet.description.length > 50
+                      ? `${pet.description.slice(0, 50)}...`
                       : pet.description}
                   </p>
                   <button
@@ -94,6 +94,7 @@ const FoundPets = () => {
                   </button>
                 </div>
               </div>
+              )
             ))}
           </div>
 
@@ -113,29 +114,29 @@ const FoundPets = () => {
                       onClick={closeModal}
                     ></button>
                   </div>
-                  <div className="modal-body text-center">
+                  <div className="modal-body">
                     <img
                       src={selectedPet.photoURL}
                       alt="Large View"
                       className="img-fluid"
                     />
                     <p className="mt-3">
-                      <strong>Description:</strong> {selectedPet.description}
+                      <span className="bold">Description</span> <br/>{selectedPet.description}
                     </p>
                     <p>
-                      <strong>Location Found:</strong> {selectedPet.street}, {" "}
+                      <span className="bold">Location Found</span> <br/>{selectedPet.street}, {" "}
                       {selectedPet.city}, {selectedPet.state}
                     </p>
                   </div>
                   <div className="modal-footer">
                     <button
-                      className="btn btn-primary"
+                      className="btn btn-outline-primary"
                       onClick={openClaimForm}
                     >
                       Claim Pet
                     </button>
                     <button
-                      className="btn btn-secondary"
+                      className="btn btn-outline-secondary"
                       onClick={closeModal}
                     >
                       Close
@@ -202,12 +203,12 @@ const FoundPets = () => {
                         ></textarea>
                       </div>
                       <div className="modal-footer">
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" className="btn btn-outline-success">
                           Submit Claim
                         </button>
                         <button
                           type="button"
-                          className="btn btn-secondary"
+                          className="btn btn-outline-secondary"
                           onClick={closeModal}
                         >
                           Cancel

@@ -244,7 +244,7 @@ function PetFeed() {
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{selectedPet.petsname} - Details</h5>
+                <h5 className="modal-title thin">{selectedPet.petsname} - Details</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -257,20 +257,20 @@ function PetFeed() {
                     <img
                       src={selectedPet.photoURL}
                       alt={selectedPet.petsname}
-                      className='img-fluid'
+                      className='img-fluid width100'
                     />
                   )}
                 </div>
-                <p><strong>Name:</strong> {selectedPet.petsname}</p>
-                <p><strong>Description:</strong> {selectedPet.description}</p>
-                <p><strong>Reported Lost At:</strong> {address}</p>
+                <p className='thin'><span className='bold'>Name</span> <br/>{selectedPet.petsname}</p>
+                <p className='thin'><span className='bold'>Description</span> <br/>{selectedPet.description}</p>
+                <p className='thin'><span className='bold'>Reported Lost At</span> <br/>{address}</p>
 
                 {/* <NeighborhoodMap neighborhoodName={address}/> */}
               </div>
-              {selectedPet.sightings && (
+              {/* {selectedPet.sightings && (
                 <div className="sightings text-center">
                   <hr/>
-                  <h3>Reported Sightings</h3>
+                  <span className="thin">Reported Sightings</span>
                   <div className="ul text-start mx-2">
                     {selectedPet.sightings.map((lastSeen) => {
                       return (
@@ -281,15 +281,15 @@ function PetFeed() {
                     })}
                   </div>
                 </div>
-              )}
+              )} */}
               <div className="modal-footer">
-                <button type="button" className="btn btn-success" onClick={handleOpenReportSightingModal}>
+                <button type="button" className="btn btn-outline-success" onClick={handleOpenReportSightingModal}>
                   I Saw This Pet!
                 </button>
-                <button type="button" className="btn btn-danger" onClick={handleCloseModal}>
+                {/* <button type="button" className="btn btn-danger" onClick={handleCloseModal}>
                   Report Post
-                </button>
-                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
+                </button> */}
+                <button type="button" className="btn btn-outline-secondary" onClick={handleCloseModal}>
                   Close
                 </button>
               </div>
@@ -333,10 +333,10 @@ function PetFeed() {
                 </div>
               </div>
               <div className="modal-footer">
-                <button disabled={confirmSightingDisabled} type="button" className="btn btn-success" onClick={confirmSighting}>
+                <button disabled={confirmSightingDisabled} type="button" className="btn btn-outline-success" onClick={confirmSighting}>
                   Confirm
                 </button>
-                <button type="button" className="btn btn-secondary" onClick={handleCloseRPM}>
+                <button type="button" className="btn btn-outline-secondary" onClick={handleCloseRPM}>
                   Close
                 </button>
               </div>

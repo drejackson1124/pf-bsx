@@ -21,13 +21,13 @@ const PetAlerts = () => {
             id: pet.id,
             name: pet.petsname,
             photo: pet.photoURL,
-            message: `${pet.petsname} was found!`,
+            message: `${pet.petsname} was found`,
           })),
           ...found_pets.map((pet) => ({
             id: pet.id,
             name: "this pet",
             photo: pet.photoURL,
-            message: `Reunited with owner!`,
+            message: `Reunited with owner`,
           })),
         ];
 
@@ -68,7 +68,7 @@ const PetAlerts = () => {
         className="alert-photo"
       />
       <div className="alert-content">
-        <h5 className="alert-title">{currentAlert.message}</h5>
+        <h5 className="alert-title"><i class="fa-thin fa-party-horn"></i> <span className="ms-2">{currentAlert.message}</span></h5>
         {/* <p className="alert-description">
           {moment(currentAlert.date).format('MMM Do')}
         </p> */}

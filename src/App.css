@@ -35,4 +35,20 @@
   color: dodgerblue;
 }
 
+.red {
+  color: red;
+}
+
+.thin {
+  font-weight: 100;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.width100 {
+  width: 100%;
+}
+
 
