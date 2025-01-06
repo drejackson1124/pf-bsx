@@ -1,20 +1,19 @@
 .pet-alert {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
+    /* display: flex;
+    align-items: center; */
+    /* padding: 15px 20px; */
+    padding: 0;
     margin: 15px auto;
     max-width: 700px;
-    border-radius: 8px;
     background-color: #f9f9f9;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .alert-photo {
-    width: 100px;
-    height: 100px;
+    height: 50px;
+    width: auto;
     object-fit: cover;
     margin-right: 20px;
-    border-radius: 8px; /* For slightly rounded corners */
   }
   
   .alert-content {
@@ -24,7 +23,7 @@
   .alert-title {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #333;
+    color: black;
     margin-bottom: 5px;
   }
   

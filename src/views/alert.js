@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Spinner from "./spinner";
 import helpers from "../js/functions";
 import "../css/alert.css";
+import moment from "moment";
 
 const PetAlerts = () => {
   const [alerts, setAlerts] = useState([]);
@@ -20,13 +21,13 @@ const PetAlerts = () => {
             id: pet.id,
             name: pet.petsname,
             photo: pet.photoURL,
-            message: `${pet.petsname} was found safe!`,
+            message: `${pet.petsname} was found!`,
           })),
           ...found_pets.map((pet) => ({
             id: pet.id,
             name: "this pet",
             photo: pet.photoURL,
-            message: `This pet has been reunited with their loving owner!`,
+            message: `Reunited with owner!`,
           })),
         ];
 
@@ -44,7 +45,7 @@ const PetAlerts = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentAlertIndex((prevIndex) => (prevIndex + 1) % alerts.length);
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [alerts]);
@@ -60,7 +61,7 @@ const PetAlerts = () => {
   const currentAlert = alerts[currentAlertIndex];
 
   return (
-    <div className="pet-alert alert alert-info d-flex align-items-center">
+    <div className="pet-alert alert d-flex align-items-center">
       <img
         src={currentAlert.photo}
         alt={currentAlert.name}
@@ -68,9 +69,9 @@ const PetAlerts = () => {
       />
       <div className="alert-content">
         <h5 className="alert-title">{currentAlert.message}</h5>
-        <p className="alert-description">
-          Help us celebrate the happy ending for {currentAlert.name}!
-        </p>
+        {/* <p className="alert-description">
+          {moment(currentAlert.date).format('MMM Do')}
+        </p> */}
       </div>
     </div>
   );
